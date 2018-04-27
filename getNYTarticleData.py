@@ -1,10 +1,11 @@
 import requests
 import json
+from nyt_api_key import API_KEY
 
 def getNYTdata():
 	data_url = "https://api.nytimes.com/svc/search/v2/articlesearch.json"
 	params = {
-		'api-key' : "6ea06f82208f442f9eea72740f9c9c00",
+		'api-key' : API_KEY,
 		'begin_date': "20180326",
 		'end_date': "20180426"
 	}
