@@ -26,14 +26,17 @@ public class KeywordNytCountDriver extends Configured implements Tool {
 	}
 
 	/* Reducer for counting occurences of a keyword */
-	public static class KeywordCountReducer extends Reducer<Text, Text, Text, LongWritable> {
+	public static class KeywordCountReducer extends Reducer<Text, Text, Text, Text> {
 		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 			try {
 				long wordCount = 0;
-				for (LongWritable val : values) {
+				String urls = "";
+				for (Text val : values) {
 					wordCount += 1;
+					urls += val + " ";
 				}
-				context.write(key, new LongWritable(wordCount));
+				urls = Long.toString(wordCount) + " " + urls;
+				context.write(key, new Text(urls));
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -48,7 +51,9 @@ public class KeywordNytCountDriver extends Configured implements Tool {
 			try {
 				String[] strTk = value.toString().split("\t");
 				if (strTk.length == 2){
-					context.write(new LongWritable(Integer.parseInt(strTk[1])), new Text(strTk[0]));
+					String keywordCount = strTk[1].substring(0, strTk[1].indexOf(" "));
+					String keywordAndUrl = strTk[0] + " " + strTk[1].substring(strTk[1].indexOf(" "));
+					context.write(new LongWritable(Integer.parseInt(keywordCount)), new Text(keywordAndUrl));
 				}
 			} catch (Exception e){
 				e.printStackTrace();
@@ -110,7 +115,7 @@ public class KeywordNytCountDriver extends Configured implements Tool {
 	  job.setReducerClass(KeywordCountReducer.class);
 
 	  job.setOutputKeyClass(Text.class);
-	  job.setOutputValueClass(LongWritable.class);
+	  job.setOutputValueClass(Text.class);
 
 	  FileInputFormat.addInputPath(job, new Path(args[0]));
 	  FileOutputFormat.setOutputPath(job, new Path(OUTPUT_PATH));
