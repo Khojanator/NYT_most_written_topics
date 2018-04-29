@@ -26,17 +26,20 @@ public class KeywordNytCountDriver extends Configured implements Tool {
 	}
 
 	/* Reducer for counting occurences of a keyword */
-	public static class KeywordCountReducer extends Reducer<Text, Text, Text, Text> {
+	public static class KeywordCountReducer extends Reducer<Text, Text, Text, LongWritable> {
 		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 			try {
 				long wordCount = 0;
 				String urls = "";
 				for (Text val : values) {
 					wordCount += 1;
-					urls += val + " ";
+					// Get first 5 URLs of articles relating to a keyword
+					if (wordCount < 6) {
+						urls += val + " ";
+					}
 				}
-				urls = Long.toString(wordCount) + " " + urls;
-				context.write(key, new Text(urls));
+				urls = key.toString() + " " + urls;
+				context.write(new Text(urls), new LongWritable(wordCount));
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -51,9 +54,7 @@ public class KeywordNytCountDriver extends Configured implements Tool {
 			try {
 				String[] strTk = value.toString().split("\t");
 				if (strTk.length == 2){
-					String keywordCount = strTk[1].substring(0, strTk[1].indexOf(" "));
-					String keywordAndUrl = strTk[0] + " " + strTk[1].substring(strTk[1].indexOf(" "));
-					context.write(new LongWritable(Integer.parseInt(keywordCount)), new Text(keywordAndUrl));
+					context.write(new LongWritable(Integer.parseInt(strTk[1])), new Text(strTk[0]));
 				}
 			} catch (Exception e){
 				e.printStackTrace();
