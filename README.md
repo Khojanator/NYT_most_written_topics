@@ -28,6 +28,6 @@ To see the result, run the following command:
 
 The result will be the keyword with the highest number of articles written about it. If there are multiple keywords with the same highest number of articles, all of them will be returned. The result is in the following format:
 
-`$ <keyword> <url-1> <url-2> <url-3> <url-4> <url-5>	<number-of-articles-with-keyword>`
+`<keyword> <url-1> <url-2> <url-3> <url-4> <url-5>	<number-of-articles-with-keyword>`
 
 The five URLs returned with the keyword are the first five article URLs the program found during the keyword counting phase. It will return fewer than five URLs if the keyword doesn't have five articles.
