@@ -28,7 +28,9 @@ Now, we can compile the jar file as follows
 
 `$ jar cf nyt.jar Keyword*.class`
 
-`$ hadoop jar nyt.jar KeywordNytCountDriver <input-file-path> output/`
+`$ hadoop jar nyt.jar KeywordNytCountDriver /Hadoop_NYT/nytDataMar2018.txt output/`
+
+Replace `/Hadoop_NYT/nytDataMar2018.txt` with your input file path.
 
 
 To see the result, run the following command:
