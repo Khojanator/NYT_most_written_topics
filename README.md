@@ -11,7 +11,7 @@ You can now run the python file to retrieve the dataset you're looking for with 
 
 Once the dataset has been created, you will need to put that in HDFS. This can be done via the *put* command in hdfs. Make sure you have hadoop bin directory in the _**$PATH**_. You can create a directory in HDFS for this.
 
-`hdfs dfs -mkdir Hadoop_NYT`
+`$ hdfs dfs -mkdir Hadoop_NYT`
 
 `$ hdfs dfs -put nytDataMar2018.txt /Hadoop_NYT`
 
