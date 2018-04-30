@@ -9,12 +9,20 @@ You can now run the python file to retrieve the dataset you're looking for with 
 
 `$ python getNYTarticleData.py -b 20180301 -e 20180331 -o nytDataMar2018.txt`
 
+Once the dataset has been created, you will need to put that in HDFS. This can be done via the *put* command in hdfs. Make sure you have hadoop bin directory in the _**$PATH**_. You can create a directory in HDFS for this.
+
+`hdfs dfs -mkdir Hadoop_NYT`
+
+`$ hdfs dfs -put nytDataMar2018.txt /Hadoop_NYT`
+
 ## Running the MapReduce application to find most popular keyword(s)
 After you have created the dataset of NY Times articles in your desired time range and put it in HDFS, you can run the KeywordNytCountDriver program to find the most popular keyword(s) in your dataset.
 ### How to use
-`$ module load hadoop`
+Make sure you have hadoop bin directory in the _**$PATH**_. In order to load _**HADOOP_CLASSPATH**_ variable, run the following:
 
 `$ export HADOOP_CLASSPATH=$(hadoop classpath)`
+
+Now, we can compile the jar file as follows
 
 `$ javac -classpath ${HADOOP_CLASSPATH} KeywordNytCountDriver.java`
 
